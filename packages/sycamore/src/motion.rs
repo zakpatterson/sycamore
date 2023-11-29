@@ -28,6 +28,7 @@ pub fn create_raf(mut cb: impl FnMut() + 'static) -> RafState {
         use std::cell::RefCell;
 
         use wasm_bindgen::prelude::*;
+        use wasm_bindgen::JsCast;
 
         let f = Rc::new(RefCell::new(None::<Closure<dyn FnMut()>>));
         let g = Rc::clone(&f);
@@ -58,6 +59,7 @@ pub fn create_raf(mut cb: impl FnMut() + 'static) -> RafState {
         });
         stop = Rc::new(move || running.set(false));
     }
+    
     #[cfg(not(all(target_arch = "wasm32", feature = "web")))]
     {
         start = Rc::new(move || running.set(true));
